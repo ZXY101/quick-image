@@ -1,0 +1,39 @@
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
+#image-container {
+  display: flex;
+  border: 1px solid black;
+  height: 250px;
+  background: rgba(0, 0, 0, 0.158);
+}
+
+.btn {
+  width: 50px;
+  border: none;
+  background: rgba(0, 0, 0, 0.158);
+}
+
+.btn:hover {
+  background: rgba(0, 0, 0, 0.247);
+}
+
+.btn:active {
+  background: rgba(0, 0, 0, 0.342);
+}
+
+#add {
+  width: 100%;
+  height: 50px;
+}
+
+img {
+  object-fit: contain;
+  width: 300px;
+  height: 250px;
+  border-radius: 6px;
+}

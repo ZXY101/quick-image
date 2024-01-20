@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Quick image",
+  "version": "0.1",
+
+  "description": "Adds a red border to all webpages matching mozilla.org.",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+  "host_permissions": ["*://*.bing.com/"],
+  "permissions": ["activeTab", "storage"],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+
+  "options_ui": {
+    "page": "options/options.html"
+  },
+
+  "action": {
+    "default_icon": "icons/icon.png",
+    "default_title": "Quick image",
+    "default_popup": "popup/quick-image.html"
+  },
+
+  "background": {
+    "scripts": ["content_scripts/background.js"],
+    "type": "module"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "xzxy101x@gmail.com"
+    }
+  }
+}

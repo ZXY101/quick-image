@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Quick image",
-  "version": "0.1",
+  "name": "Anki Quick image",
+  "version": "0.10",
 
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "description": "Simple browser extension to instantly add an image to your last created anki card.",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/icon.png"
   },
   "host_permissions": ["*://*.bing.com/"],
   "permissions": ["activeTab", "storage"],
@@ -31,7 +31,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "xzxy101x@gmail.com"
+      "id": "ankiquickimage@zxy101.com"
     }
   }
 }

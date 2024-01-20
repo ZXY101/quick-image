@@ -1,3 +1,7 @@
+body {
+  width: max-content !important;
+}
+
 .popup-content {
   display: flex;
   flex-direction: column;

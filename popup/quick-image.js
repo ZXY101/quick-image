@@ -87,7 +87,7 @@ function updateImage() {
   const count = document.getElementById('count');
 
   image.src = links[index];
-  count.innerHTML = `${index + 1}/${links.length}`;
+  count.textContent = `${index + 1}/${links.length}`;
 }
 
 getLastCardInfo()
@@ -150,7 +150,7 @@ getLastCardInfo()
       }
     });
 
-    document.getElementById('phrase').innerHTML = phrase;
+    document.getElementById('phrase').textContent = phrase;
 
     const res = await fetchResource(
       `https://www.bing.com/images/search?q=${phrase}`

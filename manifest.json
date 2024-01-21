@@ -26,7 +26,7 @@
   },
 
   "background": {
-    "scripts": ["content_scripts/background.js"],
+    "service_worker": "content_scripts/background.js",
     "type": "module"
   },
   "browser_specific_settings": {

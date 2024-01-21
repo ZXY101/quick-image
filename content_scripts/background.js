@@ -1,4 +1,4 @@
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   fetch(request.input, request.init).then(
     function (response) {
       return response.text().then(function (text) {

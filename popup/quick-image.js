@@ -1,6 +1,6 @@
 function fetchResource(input, init) {
   return new Promise((resolve, reject) => {
-    browser.runtime.sendMessage({ input, init }, (messageResponse) => {
+    chrome.runtime.sendMessage({ input, init }, (messageResponse) => {
       const [response, error] = messageResponse;
       if (response === null) {
         reject(error);
@@ -127,7 +127,7 @@ getLastCardInfo()
       const imageData = await imageToWebp(blob);
       const id = await getLastCardId();
 
-      const get = await browser.storage.sync.get('pictureField');
+      const get = await chrome.storage.sync.get('pictureField');
       const pictureField = get.pictureField ?? 'Picture';
 
       if (imageData) {
@@ -169,6 +169,6 @@ getLastCardInfo()
     updateImage();
   })
   .catch(() => {
-    browser.runtime.openOptionsPage();
+    chrome.runtime.openOptionsPage();
     window.close();
   });

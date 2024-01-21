@@ -1,6 +1,6 @@
 function saveOptions(e) {
   e.preventDefault();
-  browser.storage.sync.set({
+  chrome.storage.sync.set({
     pictureField: document.querySelector('#picture-field').value,
   });
 }
@@ -15,7 +15,7 @@ function restoreOptions() {
     console.log(`Error: ${error}`);
   }
 
-  let getting = browser.storage.sync.get('pictureField');
+  let getting = chrome.storage.sync.get('pictureField');
   getting.then(setCurrentChoice, onError);
 }
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelector('form').addEventListener('submit', saveOptions);
 
 document.getElementById('perms').addEventListener('click', () => {
-  browser.permissions.request({
+  chrome.permissions.request({
     origins: ['*://*.bing.com/'],
   });
 });

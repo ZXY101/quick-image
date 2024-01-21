@@ -1,6 +1,6 @@
 function fetchResource(input, init) {
   return new Promise((resolve, reject) => {
-    browser.runtime.sendMessage({ input, init }, (messageResponse) => {
+    chrome.runtime.sendMessage({ input, init }, (messageResponse) => {
       const [response, error] = messageResponse;
 
       if (response === null) {

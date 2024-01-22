@@ -92,7 +92,9 @@ function updateImage() {
 
 getLastCardInfo()
   .then(async (lastCard) => {
-    const phrase = lastCard.fields.Word.value;
+    const get = await chrome.storage.sync.get('wordField');
+    const wordField = get.wordField || 'Word';
+    const phrase = lastCard.fields[`${wordField}`].value;
 
     document.getElementById('left').addEventListener('click', () => {
       if (images.length === 0) return;
@@ -152,23 +154,27 @@ getLastCardInfo()
 
     document.getElementById('phrase').textContent = phrase;
 
-    const res = await fetchResource(
-      `https://www.bing.com/images/search?q=${phrase}`
-    );
+    fetchResource(`https://www.bing.com/images/search?q=${phrase}`)
+      .then(async (res) => {
+        const text = await res.text();
+        const parser = new DOMParser();
+        const html = parser.parseFromString(text, 'text/html');
 
-    const text = await res.text();
-    const parser = new DOMParser();
-    const html = parser.parseFromString(text, 'text/html');
+        const images = html.getElementsByClassName('iusc');
 
-    const images = html.getElementsByClassName('iusc');
+        links = [...images].map((img) => {
+          return JSON.parse(img.attributes['m'].value).turl;
+        });
 
-    links = [...images].map((img) => {
-      return JSON.parse(img.attributes['m'].value).turl;
-    });
-
-    updateImage();
+        updateImage();
+      })
+      .catch((err) => {
+        chrome.runtime.openOptionsPage();
+        console.log('Something went wrong: ', err);
+        document.getElementById('error').textContent = `Error: ${err}`;
+      });
   })
-  .catch(() => {
-    chrome.runtime.openOptionsPage();
-    window.close();
+  .catch((err) => {
+    console.log('Something went wrong: ', err);
+    document.getElementById('error').textContent = `Error: ${err}`;
   });

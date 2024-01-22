@@ -2,21 +2,29 @@ function saveOptions(e) {
   e.preventDefault();
   chrome.storage.sync.set({
     pictureField: document.querySelector('#picture-field').value,
+    wordField: document.querySelector('#word-field').value,
   });
 }
 
 function restoreOptions() {
-  function setCurrentChoice(result) {
-    document.querySelector('#picture-field').value =
-      result.pictureField || 'Picture';
-  }
+  chrome.storage.sync
+    .get('pictureField')
+    .then((result) => {
+      document.querySelector('#picture-field').value =
+        result.pictureField || 'Picture';
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+    });
 
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
-
-  let getting = chrome.storage.sync.get('pictureField');
-  getting.then(setCurrentChoice, onError);
+  chrome.storage.sync
+    .get('wordField')
+    .then((result) => {
+      document.querySelector('#word-field').value = result.wordField || 'Word';
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Anki Quick image",
-  "version": "0.10",
+  "version": "0.11",
 
   "description": "Simple browser extension to instantly add an image to your last created anki card.",
 
@@ -9,7 +9,7 @@
     "48": "icons/icon.png"
   },
   "host_permissions": ["*://*.bing.com/"],
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["storage"],
 
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
@@ -26,12 +26,6 @@
   },
 
   "background": {
-    "service_worker": "content_scripts/background.js",
-    "type": "module"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "ankiquickimage@zxy101.com"
-    }
+    "service_worker": "content_scripts/background.js"
   }
 }

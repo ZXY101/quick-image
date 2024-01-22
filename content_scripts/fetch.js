@@ -18,7 +18,6 @@ function fetchResource(input, init) {
     });
   });
 }
-document.getElementById('fuck').innerHTML = 'sdjkfuklosdifklsd';
 
 fetchResource('https://www.bing.com/images/search?q=食べ物').then((thing) => {
   thing.text().then((what) => {

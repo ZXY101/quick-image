@@ -154,27 +154,24 @@ getLastCardInfo()
 
     document.getElementById('phrase').textContent = phrase;
 
-    fetchResource(`https://www.bing.com/images/search?q=${phrase}`)
-      .then(async (res) => {
-        const text = await res.text();
-        const parser = new DOMParser();
-        const html = parser.parseFromString(text, 'text/html');
+    const res = await fetchResource(
+      `https://www.bing.com/images/search?q=${phrase}`
+    );
 
-        const images = html.getElementsByClassName('iusc');
+    const text = await res.text();
+    const parser = new DOMParser();
+    const html = parser.parseFromString(text, 'text/html');
 
-        links = [...images].map((img) => {
-          return JSON.parse(img.attributes['m'].value).turl;
-        });
+    const images = html.getElementsByClassName('iusc');
 
-        updateImage();
-      })
-      .catch((err) => {
-        chrome.runtime.openOptionsPage();
-        console.log('Something went wrong: ', err);
-        document.getElementById('error').textContent = `Error: ${err}`;
-      });
+    links = [...images].map((img) => {
+      return JSON.parse(img.attributes['m'].value).turl;
+    });
+
+    updateImage();
   })
   .catch((err) => {
     console.log('Something went wrong: ', err);
     document.getElementById('error').textContent = `Error: ${err}`;
+    chrome.runtime.openOptionsPage();
   });

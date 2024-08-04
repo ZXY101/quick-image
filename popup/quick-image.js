@@ -140,9 +140,11 @@ getLastCardInfo()
 
     const images = html.getElementsByClassName('iusc');
 
-    links = [...images].map((img) => {
-      return JSON.parse(img.attributes['m'].value).turl;
-    });
+        links = [...images]
+            .map((img) => {
+                return JSON.parse(img.attributes["m"].value).turl;
+            })
+            .filter((link) => link);
 
     updateImages();
 

@@ -1,15 +1,22 @@
 body {
   width: max-content !important;
+  height: 100vh; /* Set the height to fill the viewport */
+  margin: 0; /* Remove any default margin */
   overflow: hidden; /* Hide any overflow */
   background: #31363F;
+  display: flex;
+  align-items: center; /* Center the content vertically */
+  justify-content: center; /* Center the content horizontally */
 }
 
 .popup-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
-  width: 680px; /* Adjust the width of the popup content to fit 3 images per row */]
+  justify-content: center; /* Center the content vertically within the popup */
+  width: 680px; /* Adjust the width of the popup content to fit 3 images per row */
+  margin: 0; /* Remove any default margin */
+  padding-bottom: 10px;
 }
 
 #image-container {
@@ -17,6 +24,7 @@ body {
   align-items: center;
   width: 100%;
   overflow: hidden; /* Hide any overflow */
+  margin-bottom: 10px;
 }
 
 #images-grid {
@@ -62,11 +70,16 @@ body {
 }
 
 #phrase {
-    margin: 10px 0;
-    color: #5F9EA0;
-    font-size: 20px;
+  margin: 10px 0;
+  color: #5F9EA0;
+  font-size: 20px;
 }
 
 #count {
-    color: #EEEEEE;
+  color: #EEEEEE;
+}
+
+h3, #error {
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
 }

@@ -1,33 +1,67 @@
 body {
   width: max-content !important;
+  height: 100vh; /* Set the height to fill the viewport */
+  margin: 0; /* Remove any default margin */
+  overflow: hidden; /* Hide any overflow */
+  background: #31363F;
+  display: flex;
+  align-items: center; /* Center the content vertically */
+  justify-content: center; /* Center the content horizontally */
 }
 
 .popup-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
+  justify-content: center; /* Center the content vertically within the popup */
+  width: 680px; /* Adjust the width of the popup content to fit 3 images per row */
+  margin: 0; /* Remove any default margin */
+  padding-bottom: 10px;
 }
 
 #image-container {
   display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden; /* Hide any overflow */
+  margin-bottom: 10px;
+}
+
+#images-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 200px); /* Adjust the size of the images */
+  grid-template-rows: repeat(2, 150px); /* Adjust the size of the images */
+  gap: 10px;
   border: 1px solid black;
-  height: 250px;
   background: rgba(0, 0, 0, 0.158);
+}
+
+.grid-img {
+  width: 200px; /* Adjust the width */
+  height: 150px; /* Adjust the height */
+  object-fit: contain;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.grid-img:hover {
+  outline: 2px solid #007bff;
 }
 
 .btn {
   width: 50px;
+  height: 150px;
   border: none;
-  background: rgba(0, 0, 0, 0.158);
+  background: rgba(34, 40, 49, 0.5);
+  color: white;
 }
 
 .btn:hover {
-  background: rgba(0, 0, 0, 0.247);
+  background: #222831;
 }
 
 .btn:active {
-  background: rgba(0, 0, 0, 0.342);
+  background: rgba(255, 255, 255, 0.342);
 }
 
 #add {
@@ -35,9 +69,17 @@ body {
   height: 50px;
 }
 
-img {
-  object-fit: contain;
-  width: 300px;
-  height: 250px;
-  border-radius: 6px;
+#phrase {
+  margin: 10px 0;
+  color: #5F9EA0;
+  font-size: 20px;
+}
+
+#count {
+  color: #EEEEEE;
+}
+
+h3, #error {
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
 }

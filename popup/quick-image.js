@@ -1,11 +1,10 @@
-function fetchResource(input, init) {
+async function fetchResource(input, init) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage({ input, init }, (messageResponse) => {
       const [response, error] = messageResponse;
       if (response === null) {
         reject(error);
       } else {
-        // Use undefined on a 204 - No Content
         const body = response.body ? new Blob([response.body]) : undefined;
         resolve(
           new Response(body, {
@@ -82,12 +81,21 @@ async function imageToWebp(source) {
 let index = 0;
 let links = [];
 
-function updateImage() {
-  const image = document.getElementById('image');
+function updateImages() {
   const count = document.getElementById('count');
+  count.textContent = `${index + 1}-${index + 6}/${links.length}`;
 
-  image.src = links[index];
-  count.textContent = `${index + 1}/${links.length}`;
+  for (let i = 0; i < 6; i++) {
+    const imgElement = document.getElementById(`img-${i + 1}`);
+    const imgIndex = index + i;
+
+    if (imgIndex < links.length) {
+      imgElement.src = links[imgIndex];
+      imgElement.style.display = 'block';
+    } else {
+      imgElement.style.display = 'none';
+    }
+  }
 }
 
 getLastCardInfo()
@@ -97,58 +105,26 @@ getLastCardInfo()
     const phrase = lastCard.fields[`${wordField}`].value;
 
     document.getElementById('left').addEventListener('click', () => {
-      if (images.length === 0) return;
+      if (links.length === 0) return;
 
       if (index > 0) {
-        index--;
-        updateImage();
+        index -= 6;
+        updateImages();
       } else {
-        index = images.length - 1;
-        updateImage();
+        index = Math.max(0, links.length - 6);
+        updateImages();
       }
     });
 
     document.getElementById('right').addEventListener('click', () => {
-      if (images.length === 0) return;
+      if (links.length === 0) return;
 
-      if (index < links.length - 1) {
-        index++;
-        updateImage();
+      if (index < links.length - 6) {
+        index += 6;
+        updateImages();
       } else {
         index = 0;
-        updateImage();
-      }
-    });
-
-    document.getElementById('add').addEventListener('click', async () => {
-      if (images.length === 0) return;
-
-      const res = await fetch(links[index]);
-      const blob = await res.blob();
-
-      const imageData = await imageToWebp(blob);
-      const id = await getLastCardId();
-
-      const get = await chrome.storage.sync.get('pictureField');
-      const pictureField = get.pictureField ?? 'Picture';
-
-      if (imageData) {
-        ankiConnect('updateNoteFields', {
-          note: {
-            id,
-            fields: {
-              [pictureField]: '',
-            },
-            picture: {
-              filename: `_${id}.webp`,
-              data: imageData.split(';base64,')[1],
-              fields: [pictureField],
-            },
-          },
-        }).then(() => {
-          alert('Image added to card');
-          window.close();
-        });
+        updateImages();
       }
     });
 
@@ -164,11 +140,62 @@ getLastCardInfo()
 
     const images = html.getElementsByClassName('iusc');
 
-    links = [...images].map((img) => {
-      return JSON.parse(img.attributes['m'].value).turl;
-    });
+        links = [...images]
+            .map((img) => {
+                return JSON.parse(img.attributes["m"].value).turl;
+            })
+            .filter((link) => link);
 
-    updateImage();
+    updateImages();
+
+    for (let i = 0; i < 6; i++) {
+      document.getElementById(`img-${i + 1}`).addEventListener('click', async () => {
+        const imgIndex = index + i;
+        if (imgIndex < links.length) {
+          const res = await fetch(links[imgIndex]);
+          const blob = await res.blob();
+          const imageData = await imageToWebp(blob);
+          const id = await getLastCardId();
+
+          const get = await chrome.storage.sync.get('pictureField');
+          const pictureField = get.pictureField ?? 'Picture';
+
+          if (imageData) {
+            ankiConnect('updateNoteFields', {
+              note: {
+                id,
+                fields: {
+                  [pictureField]: '',
+                },
+                picture: {
+                  filename: `_${id}.webp`,
+                  data: imageData.split(';base64,')[1],
+                  fields: [pictureField],
+                },
+              },
+            }).then(() => {
+                const message = document.createElement('div');
+		message.textContent = 'Image added to card';
+		message.style.position = 'fixed';
+		message.style.bottom = '20px';
+		message.style.left = '50%';
+		message.style.transform = 'translateX(-50%)';
+		message.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+		message.style.color = 'white';
+		message.style.padding = '10px 20px';
+		message.style.borderRadius = '5px';
+		message.style.zIndex = '1000';
+		document.body.appendChild(message);
+
+		setTimeout(() => {
+		    message.remove();
+		    window.close();
+  }, 2000);
+            });
+          }
+        }
+      });
+    }
   })
   .catch((err) => {
     console.log('Something went wrong: ', err);

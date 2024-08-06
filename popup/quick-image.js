@@ -30,8 +30,9 @@ async function ankiConnect(action, params) {
     }
 
     return json.result;
-  } catch (e) {
-    showSnackbar(`Error: ${e?.message ?? e}`);
+  } catch (err) {
+    console.log('Something went wrong: ', err);
+    document.getElementById('error').textContent = `Error: ${err}`;
   }
 }
 
@@ -140,61 +141,63 @@ getLastCardInfo()
 
     const images = html.getElementsByClassName('iusc');
 
-        links = [...images]
-            .map((img) => {
-                return JSON.parse(img.attributes["m"].value).turl;
-            })
-            .filter((link) => link);
+    links = [...images]
+      .map((img) => {
+        return JSON.parse(img.attributes['m'].value).turl;
+      })
+      .filter((link) => link);
 
     updateImages();
 
     for (let i = 0; i < 6; i++) {
-      document.getElementById(`img-${i + 1}`).addEventListener('click', async () => {
-        const imgIndex = index + i;
-        if (imgIndex < links.length) {
-          const res = await fetch(links[imgIndex]);
-          const blob = await res.blob();
-          const imageData = await imageToWebp(blob);
-          const id = await getLastCardId();
+      document
+        .getElementById(`img-${i + 1}`)
+        .addEventListener('click', async () => {
+          const imgIndex = index + i;
+          if (imgIndex < links.length) {
+            const res = await fetch(links[imgIndex]);
+            const blob = await res.blob();
+            const imageData = await imageToWebp(blob);
+            const id = await getLastCardId();
 
-          const get = await chrome.storage.sync.get('pictureField');
-          const pictureField = get.pictureField ?? 'Picture';
+            const get = await chrome.storage.sync.get('pictureField');
+            const pictureField = get.pictureField ?? 'Picture';
 
-          if (imageData) {
-            ankiConnect('updateNoteFields', {
-              note: {
-                id,
-                fields: {
-                  [pictureField]: '',
+            if (imageData) {
+              ankiConnect('updateNoteFields', {
+                note: {
+                  id,
+                  fields: {
+                    [pictureField]: '',
+                  },
+                  picture: {
+                    filename: `_${id}.webp`,
+                    data: imageData.split(';base64,')[1],
+                    fields: [pictureField],
+                  },
                 },
-                picture: {
-                  filename: `_${id}.webp`,
-                  data: imageData.split(';base64,')[1],
-                  fields: [pictureField],
-                },
-              },
-            }).then(() => {
+              }).then(() => {
                 const message = document.createElement('div');
-		message.textContent = 'Image added to card';
-		message.style.position = 'fixed';
-		message.style.bottom = '20px';
-		message.style.left = '50%';
-		message.style.transform = 'translateX(-50%)';
-		message.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
-		message.style.color = 'white';
-		message.style.padding = '10px 20px';
-		message.style.borderRadius = '5px';
-		message.style.zIndex = '1000';
-		document.body.appendChild(message);
+                message.textContent = 'Image added to card';
+                message.style.position = 'fixed';
+                message.style.bottom = '20px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '5px';
+                message.style.zIndex = '1000';
+                document.body.appendChild(message);
 
-		setTimeout(() => {
-		    message.remove();
-		    window.close();
-  }, 2000);
-            });
+                setTimeout(() => {
+                  message.remove();
+                  window.close();
+                }, 800);
+              });
+            }
           }
-        }
-      });
+        });
     }
   })
   .catch((err) => {

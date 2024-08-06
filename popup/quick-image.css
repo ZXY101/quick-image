@@ -1,6 +1,5 @@
 body {
   width: max-content !important;
-  height: 100vh; /* Set the height to fill the viewport */
   margin: 0; /* Remove any default margin */
   overflow: hidden; /* Hide any overflow */
   background: #31363F;
@@ -13,10 +12,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 680px;
   justify-content: center; /* Center the content vertically within the popup */
-  width: 680px; /* Adjust the width of the popup content to fit 3 images per row */
-  margin: 0; /* Remove any default margin */
-  padding-bottom: 10px;
+  gap: 10px;
+  padding-top: 10px;
 }
 
 #image-container {
@@ -24,28 +23,31 @@ body {
   align-items: center;
   width: 100%;
   overflow: hidden; /* Hide any overflow */
-  margin-bottom: 10px;
 }
 
 #images-grid {
   display: grid;
   grid-template-columns: repeat(3, 200px); /* Adjust the size of the images */
   grid-template-rows: repeat(2, 150px); /* Adjust the size of the images */
-  gap: 10px;
   border: 1px solid black;
-  background: rgba(0, 0, 0, 0.158);
+  background: black;
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
 }
 
 .grid-img {
   width: 200px; /* Adjust the width */
   height: 150px; /* Adjust the height */
   object-fit: contain;
-  border-radius: 6px;
   cursor: pointer;
+  background: rgb(32, 32, 32);
+  border: 1px solid black;
+  border-radius: 6px;
 }
 
 .grid-img:hover {
-  outline: 2px solid #007bff;
+  opacity: 60%;
 }
 
 .btn {
@@ -70,9 +72,8 @@ body {
 }
 
 #phrase {
-  margin: 10px 0;
   color: #5F9EA0;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 #count {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Anki Quick image",
-  "version": "0.2",
+  "version": "0.20",
 
   "description": "Simple browser extension to instantly add an image to your last created anki card.",
 
